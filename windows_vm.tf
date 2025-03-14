@@ -14,7 +14,7 @@ resource "azurerm_windows_virtual_machine" "this" {
   zone                                                   = var.zone
   tags                                                   = var.vm_tags
   boot_diagnostics {
-    storage_uri = null
+    storage_account_uri = null
   }
   
   os_disk {
