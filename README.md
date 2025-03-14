@@ -5,14 +5,14 @@ This module deploys a Linux or Windows virtual machine for troubleshooting purpo
 ## Features
 - Rapid deployment of either Linux or Windows VMs with minimal configuration
 - Automatic tagging with deployment date and purpose
-- Extracts network information from subnet ID
+- Extracts location & network information from subnet ID
 - Customizable VM properties for specific testing scenarios
 - Support for static IP address assignment
 
 ## Usage
 
 ### Steps
-1. Login via Azure CLI to the correct tenant
+1. Login via Azure CLI to the correct tenant (selecting the subscription is not required)
 2. Deploy the module
 
 ### Minimal Configuration
