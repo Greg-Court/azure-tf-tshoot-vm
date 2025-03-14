@@ -14,6 +14,9 @@ resource "azurerm_linux_virtual_machine" "this" {
   secure_boot_enabled                                    = var.secure_boot_enabled
   custom_data                                            = var.enable_boot_packages ? base64encode(local.cloud_init_config) : null
   tags                                                   = local.vm_tags_merged
+  boot_diagnostics {
+    storage_uri = null
+  }
 
   os_disk {
     caching              = var.os_disk_caching

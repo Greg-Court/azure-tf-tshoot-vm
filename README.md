@@ -8,6 +8,7 @@ This module deploys a Linux or Windows virtual machine for troubleshooting purpo
 - Extracts location & network information from subnet ID
 - Customizable VM properties for specific testing scenarios
 - Support for static IP address assignment
+- Linux VM cloud-init with common network troubleshooting tools
 
 ## Usage
 
