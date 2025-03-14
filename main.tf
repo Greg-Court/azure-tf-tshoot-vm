@@ -60,7 +60,7 @@ resource "azurerm_linux_virtual_machine" "this" {
     storage_account_type = "StandardSSD_LRS"
   }
 
-  source_image_reference = {
+  source_image_reference {
     publisher = "canonical"
     offer     = "0001-com-ubuntu-server-jammy"
     sku       = "22_04-lts-gen2"
