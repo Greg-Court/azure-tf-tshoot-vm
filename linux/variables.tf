@@ -1,15 +1,5 @@
-variable "vm_name" {
-  description = "The name of the virtual machine"
-  type        = string
-}
-
 variable "subnet_id" {
   description = "The ID of the subnet where the VM will be deployed"
-  type        = string
-}
-
-variable "location" {
-  description = "The Azure region where resources will be deployed"
   type        = string
 }
 

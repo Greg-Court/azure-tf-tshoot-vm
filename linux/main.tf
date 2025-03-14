@@ -13,21 +13,36 @@ locals {
 
   # Extract subscription_id from subnet_id using regex
   subscription_id = element(regex("/subscriptions/([^/]+)/", var.subnet_id), 0)
-
+  
+  # Get subnet resource to extract location
+  subnet_resource_group = element(regex("/resourceGroups/([^/]+)/", var.subnet_id), 0)
+  vnet_name = element(regex("/virtualNetworks/([^/]+)/", var.subnet_id), 0)
+  subnet_name = element(regex("/subnets/([^/]+)", var.subnet_id), 0)
+  
+  # Generate VM name based on location
+  vm_name = "vm-tshoot-${data.azurerm_subnet.this.location}"
+  
   vm_tags_merged = merge(local.common_tags, var.vm_tags)
   rg_tags_merged = merge(local.common_tags, var.rg_tags)
 }
 
+# Get subnet data to extract location
+data "azurerm_subnet" "this" {
+  name                 = local.subnet_name
+  virtual_network_name = local.vnet_name
+  resource_group_name  = local.subnet_resource_group
+}
+
 # Create resource group
 resource "azurerm_resource_group" "this" {
-  name     = "rg-${var.vm_name}"
-  location = var.location
+  name     = "rg-${local.vm_name}"
+  location = data.azurerm_subnet.this.location
   tags     = local.rg_tags_merged
 }
 
 # Create network interface
 resource "azurerm_network_interface" "this" {
-  name                = "${var.vm_name}-nic"
+  name                = "${local.vm_name}-nic"
   location            = azurerm_resource_group.this.location
   resource_group_name = azurerm_resource_group.this.name
 
@@ -40,7 +55,7 @@ resource "azurerm_network_interface" "this" {
 
 # Create Linux VM
 resource "azurerm_linux_virtual_machine" "this" {
-  name                                                   = var.vm_name
+  name                                                   = local.vm_name
   resource_group_name                                    = azurerm_resource_group.this.name
   location                                               = azurerm_resource_group.this.location
   size                                                   = "Standard_B1s"
