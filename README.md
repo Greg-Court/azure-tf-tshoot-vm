@@ -11,6 +11,10 @@ This module deploys a Linux or Windows virtual machine for troubleshooting purpo
 
 ## Usage
 
+### Steps
+1. Login via Azure CLI to the correct tenant
+2. Deploy the module
+
 ### Minimal Configuration
 In its most simple form, a troubleshooting VM can be deployed with just the subnet ID and OS type:
 
