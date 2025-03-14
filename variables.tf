@@ -3,11 +3,6 @@ variable "vm_name" {
   type        = string
 }
 
-variable "subscription_id" {
-  description = "The ID of the Azure Subscription where resources will be deployed"
-  type        = string
-}
-
 variable "os_type" {
   description = "The OS type of the VM. Valid values are 'windows' or 'linux'"
   type        = string

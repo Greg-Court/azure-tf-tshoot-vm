@@ -1,6 +1,6 @@
 provider "azurerm" {
   features {}
-  subscription_id = var.subscription_id
+  subscription_id = local.subscription_id
 }
 
 locals {
@@ -10,6 +10,9 @@ locals {
     "DeployedOn" = formatdate("YYYY-MM-DD", timestamp())
     "DeployedBy" = "Cloud Direct"
   }
+
+  # Extract subscription_id from subnet_id using regex
+  subscription_id = element(regex("/subscriptions/([^/]+)/", var.subnet_id), 0)
 
   vm_tags_merged = merge(local.common_tags, var.vm_tags)
   rg_tags_merged = merge(local.common_tags, var.rg_tags)
