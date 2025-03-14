@@ -3,7 +3,7 @@ resource "azurerm_windows_virtual_machine" "this" {
   name                                                   = local.vm_name
   resource_group_name                                    = azurerm_resource_group.this.name
   location                                               = azurerm_resource_group.this.location
-  size                                                   = "Standard_B1s"
+  size                                                   = "Standard_B2ms"
   admin_username                                         = "azureadmin"
   admin_password                                         = var.admin_password
   network_interface_ids                                  = [azurerm_network_interface.this.id]

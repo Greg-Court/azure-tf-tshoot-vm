@@ -6,7 +6,6 @@ variable "subnet_id" {
 variable "os_type" {
   description = "The OS type for the VM. Can be 'linux' or 'windows'"
   type        = string
-  default     = "linux"
   
   validation {
     condition     = contains(["linux", "windows"], lower(var.os_type))
