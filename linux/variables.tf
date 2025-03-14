@@ -3,15 +3,6 @@ variable "vm_name" {
   type        = string
 }
 
-variable "os_type" {
-  description = "The OS type of the VM. Valid values are 'windows' or 'linux'"
-  type        = string
-  validation {
-    condition     = contains(["windows", "linux"], lower(var.os_type))
-    error_message = "Valid values for os_type are 'windows' or 'linux'."
-  }
-}
-
 variable "subnet_id" {
   description = "The ID of the subnet where the VM will be deployed"
   type        = string
@@ -32,4 +23,11 @@ variable "rg_tags" {
   description = "A map of tags to assign to the resource group"
   type        = map(string)
   default     = {}
+}
+
+variable "admin_password" {
+  description = "The administrator password for the VM"
+  type        = string
+  sensitive   = true
+  default     = "Pa$$w0rd123!"
 }
