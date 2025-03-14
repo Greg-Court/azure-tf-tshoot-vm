@@ -43,6 +43,17 @@ variable "admin_password" {
   default     = "Pa$$w0rd123!"
 }
 
+variable "zone" {
+  description = "The availability zone number for the VM. Valid values are 1, 2, 3"
+  type        = number
+  default     = null
+  
+  validation {
+    condition     = var.zone == null || contains([1, 2, 3], var.zone)
+    error_message = "The zone value must be either null, 1, 2, or 3."
+  }
+}
+
 # OS Disk Configuration
 variable "os_disk_caching" {
   description = "The type of caching to use on the OS disk"
@@ -137,4 +148,10 @@ variable "enable_boot_packages" {
   description = "Enable installation of packages on first boot (Linux only)"
   type        = bool
   default     = true
+}
+
+variable "custom_cloud_init" {
+  description = "Custom cloud-init config for Linux VMs. This will override the default cloud-init if provided"
+  type        = string
+  default     = null
 }

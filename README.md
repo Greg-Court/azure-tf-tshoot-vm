@@ -44,6 +44,7 @@ module "tshoot_vm" {
   vm_size        = "Standard_D2s_v3"
   admin_username = "customadmin"
   admin_password = "CustomP@ssw0rd!"
+  zone           = 1
   
   # OS disk configuration
   os_disk_caching              = "ReadOnly"
@@ -64,6 +65,16 @@ module "tshoot_vm" {
   patch_mode                        = "Manual"
   bypass_platform_safety_checks     = false
   secure_boot_enabled               = true
+
+  # Custom cloud-init (Linux only)
+  custom_cloud_init = <<-EOT
+    #cloud-config
+    package_update: true
+    packages:
+      - nginx
+      - postgresql-client
+      - tcpdump
+  EOT
   
   # Tags
   vm_tags = {
