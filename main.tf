@@ -36,9 +36,9 @@ locals {
   default_windows_offer = "WindowsServer"
   default_windows_sku = "2022-Datacenter"
   
-  source_image_publisher = var.source_image_publisher != "" ? var.source_image_publisher : (local.is_linux ? local.default_linux_publisher : local.default_windows_publisher)
-  source_image_offer = var.source_image_offer != "" ? var.source_image_offer : (local.is_linux ? local.default_linux_offer : local.default_windows_offer)
-  source_image_sku = var.source_image_sku != "" ? var.source_image_sku : (local.is_linux ? local.default_linux_sku : local.default_windows_sku)
+  source_image_publisher = var.source_image_publisher != null ? var.source_image_publisher : (local.is_linux ? local.default_linux_publisher : local.default_windows_publisher)
+  source_image_offer = var.source_image_offer != null ? var.source_image_offer : (local.is_linux ? local.default_linux_offer : local.default_windows_offer)
+  source_image_sku = var.source_image_sku != null ? var.source_image_sku : (local.is_linux ? local.default_linux_sku : local.default_windows_sku)
   
   vm_tags_merged = merge(local.common_tags, var.vm_tags)
   rg_tags_merged = merge(local.common_tags, var.rg_tags)

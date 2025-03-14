@@ -60,19 +60,19 @@ variable "os_disk_storage_account_type" {
 variable "source_image_publisher" {
   description = "The publisher of the VM image"
   type        = string
-  default     = ""
+  default     = null
 }
 
 variable "source_image_offer" {
   description = "The offer of the VM image"
   type        = string
-  default     = ""
+  default     = null
 }
 
 variable "source_image_sku" {
   description = "The SKU of the VM image"
   type        = string
-  default     = ""
+  default     = null
 }
 
 variable "source_image_version" {
