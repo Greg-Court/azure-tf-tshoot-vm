@@ -29,8 +29,8 @@ locals {
   
   # Source image reference defaults based on OS type - simplified approach
   default_linux_publisher = "canonical"
-  default_linux_offer = "0001-com-ubuntu-server-jammy"
-  default_linux_sku = "22_04-lts-gen2"
+  default_linux_offer = "0001-com-ubuntu-server-noble"
+  default_linux_sku = "24_04-lts-gen2"
   
   default_windows_publisher = "MicrosoftWindowsServer"
   default_windows_offer = "WindowsServer"
