@@ -8,7 +8,6 @@ locals {
     "Purpose"    = "Troubleshooting"
     "Temporary"  = "True"
     "DeployedOn" = formatdate("YYYY-MM-DD", timestamp())
-    "DeployedBy" = "Cloud Direct"
   }
 
   # Extract subscription_id and resource group from subnet_id using regex
