@@ -125,3 +125,9 @@ variable "rg_tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "private_ip_address" {
+  description = "The static private IP address to assign to the VM when private_ip_address_allocation is set to 'Static'"
+  type        = string
+  default     = null
+}
