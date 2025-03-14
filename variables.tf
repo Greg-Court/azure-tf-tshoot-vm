@@ -131,3 +131,10 @@ variable "private_ip_address" {
   type        = string
   default     = null
 }
+
+# Linux specific configuration
+variable "enable_boot_packages" {
+  description = "Enable installation of packages on first boot (Linux only)"
+  type        = bool
+  default     = true
+}
