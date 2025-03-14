@@ -49,7 +49,7 @@ variable "zone" {
   default     = null
   
   validation {
-    condition     = var.zone == null || contains([1, 2, 3], var.zone)
+    condition     = var.zone == null ? true : contains([1, 2, 3], var.zone)
     error_message = "The zone value must be either null, 1, 2, or 3."
   }
 }
