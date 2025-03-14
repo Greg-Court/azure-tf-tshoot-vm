@@ -19,12 +19,15 @@ locals {
   # Generate VM name based on location from the resource group
   vm_name = "${var.vm_name_prefix}-${data.azurerm_resource_group.subnet_rg.location}"
   
-  # VM size defaults based on OS type
+  # Determine OS type to simplify conditionals
+  is_linux = lower(var.os_type) == "linux"
+
+  # VM size defaults based on OS type - simplified approach
   default_linux_vm_size = "Standard_B1s"
   default_windows_vm_size = "Standard_B2ms"
-  vm_size = try(var.vm_size != "" ? var.vm_size : null, lower(var.os_type) == "linux" ? local.default_linux_vm_size : local.default_windows_vm_size)
+  vm_size = var.vm_size != "" ? var.vm_size : (local.is_linux ? local.default_linux_vm_size : local.default_windows_vm_size)
   
-  # Source image reference defaults based on OS type
+  # Source image reference defaults based on OS type - simplified approach
   default_linux_publisher = "canonical"
   default_linux_offer = "0001-com-ubuntu-server-jammy"
   default_linux_sku = "22_04-lts-gen2"
@@ -33,9 +36,9 @@ locals {
   default_windows_offer = "WindowsServer"
   default_windows_sku = "2022-Datacenter"
   
-  source_image_publisher = try(var.source_image_publisher != "" ? var.source_image_publisher : null, lower(var.os_type) == "linux" ? local.default_linux_publisher : local.default_windows_publisher)
-  source_image_offer = try(var.source_image_offer != "" ? var.source_image_offer : null, lower(var.os_type) == "linux" ? local.default_linux_offer : local.default_windows_offer)
-  source_image_sku = try(var.source_image_sku != "" ? var.source_image_sku : null, lower(var.os_type) == "linux" ? local.default_linux_sku : local.default_windows_sku)
+  source_image_publisher = var.source_image_publisher != "" ? var.source_image_publisher : (local.is_linux ? local.default_linux_publisher : local.default_windows_publisher)
+  source_image_offer = var.source_image_offer != "" ? var.source_image_offer : (local.is_linux ? local.default_linux_offer : local.default_windows_offer)
+  source_image_sku = var.source_image_sku != "" ? var.source_image_sku : (local.is_linux ? local.default_linux_sku : local.default_windows_sku)
   
   vm_tags_merged = merge(local.common_tags, var.vm_tags)
   rg_tags_merged = merge(local.common_tags, var.rg_tags)
