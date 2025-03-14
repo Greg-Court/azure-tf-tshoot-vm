@@ -106,6 +106,7 @@ module "tshoot_vm" {
 | vm_size | The size of the VM | `string` | `"Standard_B1s"` (Linux) or `"Standard_B2ms"` (Windows) |
 | admin_username | The administrator username for the VM | `string` | `"azureadmin"` |
 | admin_password | The administrator password for the VM | `string` | `"Pa$$w0rd123!"` |
+| zone | The availability zone number for the VM | `number` | `null` |
 | os_disk_caching | The type of caching to use on the OS disk | `string` | `"ReadWrite"` |
 | os_disk_storage_account_type | The storage account type for the OS disk | `string` | `"StandardSSD_LRS"` |
 | source_image_publisher | The publisher of the VM image | `string` | OS-dependent default |
@@ -118,6 +119,7 @@ module "tshoot_vm" {
 | patch_mode | The patching mode for the VM | `string` | `"AutomaticByPlatform"` |
 | bypass_platform_safety_checks | Enable bypass platform safety checks on user schedule | `bool` | `true` |
 | secure_boot_enabled | Enable secure boot | `bool` | `false` |
+| custom_cloud_init | Custom cloud-init config for Linux VMs (replaces default config) | `string` | `null` |
 | vm_tags | A map of tags to assign to the virtual machine | `map(string)` | `{}` |
 | rg_tags | A map of tags to assign to the resource group | `map(string)` | `{}` |
 

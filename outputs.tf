@@ -20,7 +20,7 @@ output "private_ip_address" {
 
 output "admin_username" {
   description = "The administrator username for the VM"
-  value       = "azureadmin"
+  value       = var.admin_username
 }
 
 output "admin_password" {

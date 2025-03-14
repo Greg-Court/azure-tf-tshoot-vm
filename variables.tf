@@ -151,7 +151,7 @@ variable "enable_boot_packages" {
 }
 
 variable "custom_cloud_init" {
-  description = "Custom cloud-init config for Linux VMs. This will override the default cloud-init if provided"
+  description = "Custom cloud-init config for Linux VMs. This completely replaces the default config when provided"
   type        = string
   default     = null
 }
