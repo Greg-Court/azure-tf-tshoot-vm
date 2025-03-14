@@ -4,12 +4,6 @@ provider "azurerm" {
 }
 
 locals {
-  common_tags = {
-    "Purpose"    = "Troubleshooting"
-    "Temporary"  = "True"
-    "DeployedOn" = formatdate("YYYY-MM-DD", timestamp())
-  }
-
   # Extract subscription_id and resource group from subnet_id using regex
   subscription_id = element(regex("/subscriptions/([^/]+)/", var.subnet_id), 0)
   subnet_resource_group = element(regex("/resourceGroups/([^/]+)/", var.subnet_id), 0)
@@ -39,9 +33,6 @@ locals {
   source_image_publisher = var.source_image_publisher != null ? var.source_image_publisher : (local.is_linux ? local.default_linux_publisher : local.default_windows_publisher)
   source_image_offer = var.source_image_offer != null ? var.source_image_offer : (local.is_linux ? local.default_linux_offer : local.default_windows_offer)
   source_image_sku = var.source_image_sku != null ? var.source_image_sku : (local.is_linux ? local.default_linux_sku : local.default_windows_sku)
-  
-  vm_tags_merged = merge(local.common_tags, var.vm_tags)
-  rg_tags_merged = merge(local.common_tags, var.rg_tags)
 }
 
 # Get subnet data
@@ -60,7 +51,7 @@ data "azurerm_resource_group" "subnet_rg" {
 resource "azurerm_resource_group" "this" {
   name     = "rg-${local.vm_name}"
   location = data.azurerm_resource_group.subnet_rg.location
-  tags     = local.rg_tags_merged
+  tags     = var.rg_tags
 }
 
 # Create network interface

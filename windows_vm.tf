@@ -12,7 +12,7 @@ resource "azurerm_windows_virtual_machine" "this" {
   bypass_platform_safety_checks_on_user_schedule_enabled = var.bypass_platform_safety_checks
   secure_boot_enabled                                    = var.secure_boot_enabled
   zone                                                   = var.zone
-  tags                                                   = local.vm_tags_merged
+  tags                                                   = var.vm_tags
   boot_diagnostics {
     storage_uri = null
   }
