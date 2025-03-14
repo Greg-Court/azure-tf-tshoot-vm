@@ -37,9 +37,7 @@ locals {
     package_update: true
     packages:
       - tcptraceroute
+      - net-tools
+      - dnsutils
   EOT
 }
-
-# - net-tools
-# - netstat
-# - ifconfig

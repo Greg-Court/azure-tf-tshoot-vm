@@ -23,7 +23,7 @@ locals {
   is_linux = lower(var.os_type) == "linux"
 
   # VM size defaults based on OS type - simplified approach
-  default_linux_vm_size = "Standard_B1s"
+  default_linux_vm_size = "Standard_B2s"
   default_windows_vm_size = "Standard_B2ms"
   vm_size = var.vm_size != "" ? var.vm_size : (local.is_linux ? local.default_linux_vm_size : local.default_windows_vm_size)
   
