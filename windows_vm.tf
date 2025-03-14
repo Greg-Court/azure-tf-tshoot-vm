@@ -3,25 +3,25 @@ resource "azurerm_windows_virtual_machine" "this" {
   name                                                   = local.vm_name
   resource_group_name                                    = azurerm_resource_group.this.name
   location                                               = azurerm_resource_group.this.location
-  size                                                   = "Standard_B2ms"
-  admin_username                                         = "azureadmin"
+  size                                                   = local.vm_size
+  admin_username                                         = var.admin_username
   admin_password                                         = var.admin_password
   network_interface_ids                                  = [azurerm_network_interface.this.id]
-  patch_mode                                             = "AutomaticByPlatform"
-  vm_agent_platform_updates_enabled                      = true
-  bypass_platform_safety_checks_on_user_schedule_enabled = true
-  secure_boot_enabled                                    = false
+  patch_mode                                             = var.patch_mode
+  vm_agent_platform_updates_enabled                      = var.vm_agent_platform_updates_enabled
+  bypass_platform_safety_checks_on_user_schedule_enabled = var.bypass_platform_safety_checks
+  secure_boot_enabled                                    = var.secure_boot_enabled
   tags                                                   = local.vm_tags_merged
 
   os_disk {
-    caching              = "ReadWrite"
-    storage_account_type = "StandardSSD_LRS"
+    caching              = var.os_disk_caching
+    storage_account_type = var.os_disk_storage_account_type
   }
 
   source_image_reference {
-    publisher = "MicrosoftWindowsServer"
-    offer     = "WindowsServer"
-    sku       = "2022-Datacenter"
-    version   = "latest"
+    publisher = local.source_image_publisher
+    offer     = local.source_image_offer
+    sku       = local.source_image_sku
+    version   = var.source_image_version
   }
 }

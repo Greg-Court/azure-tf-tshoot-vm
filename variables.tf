@@ -1,3 +1,5 @@
+############################## MANDATORY VARIABLES #############################
+
 variable "subnet_id" {
   description = "The ID of the subnet where the VM will be deployed"
   type        = string
@@ -13,6 +15,105 @@ variable "os_type" {
   }
 }
 
+############################## OPTIONAL VARIABLES ##############################
+
+# VM Configuration
+variable "vm_name_prefix" {
+  description = "Prefix for the VM name"
+  type        = string
+  default     = "vm-tshoot"
+}
+
+variable "vm_size" {
+  description = "The size of the VM. Defaults to Standard_B1s for Linux and Standard_B2ms for Windows if not specified"
+  type        = string
+  default     = ""
+}
+
+variable "admin_username" {
+  description = "The administrator username for the VM"
+  type        = string
+  default     = "azureadmin"
+}
+
+variable "admin_password" {
+  description = "The administrator password for the VM"
+  type        = string
+  sensitive   = true
+  default     = "Pa$$w0rd123!"
+}
+
+# OS Disk Configuration
+variable "os_disk_caching" {
+  description = "The type of caching to use on the OS disk"
+  type        = string
+  default     = "ReadWrite"
+}
+
+variable "os_disk_storage_account_type" {
+  description = "The storage account type for the OS disk"
+  type        = string
+  default     = "StandardSSD_LRS"
+}
+
+# Source Image Configuration
+variable "source_image_publisher" {
+  description = "The publisher of the VM image"
+  type        = string
+  default     = ""
+}
+
+variable "source_image_offer" {
+  description = "The offer of the VM image"
+  type        = string
+  default     = ""
+}
+
+variable "source_image_sku" {
+  description = "The SKU of the VM image"
+  type        = string
+  default     = ""
+}
+
+variable "source_image_version" {
+  description = "The version of the VM image"
+  type        = string
+  default     = "latest"
+}
+
+# Network Configuration
+variable "private_ip_address_allocation" {
+  description = "The private IP address allocation method"
+  type        = string
+  default     = "Dynamic"
+}
+
+# Security and Patching
+variable "vm_agent_platform_updates_enabled" {
+  description = "Enable platform updates via VM agent"
+  type        = bool
+  default     = true
+}
+
+variable "patch_mode" {
+  description = "The patching mode for the VM"
+  type        = string
+  default     = "AutomaticByPlatform"
+}
+
+variable "bypass_platform_safety_checks" {
+  description = "Enable bypass platform safety checks on user schedule"
+  type        = bool
+  default     = true
+}
+
+variable "secure_boot_enabled" {
+  description = "Enable secure boot"
+  type        = bool
+  default     = false
+}
+
+# Tags
 variable "vm_tags" {
   description = "A map of tags to assign to the virtual machine"
   type        = map(string)
@@ -23,11 +124,4 @@ variable "rg_tags" {
   description = "A map of tags to assign to the resource group"
   type        = map(string)
   default     = {}
-}
-
-variable "admin_password" {
-  description = "The administrator password for the VM"
-  type        = string
-  sensitive   = true
-  default     = "Pa$$w0rd123!"
 }
