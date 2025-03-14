@@ -12,7 +12,7 @@ resource "azurerm_linux_virtual_machine" "this" {
   patch_mode                                             = var.patch_mode
   bypass_platform_safety_checks_on_user_schedule_enabled = var.bypass_platform_safety_checks
   secure_boot_enabled                                    = var.secure_boot_enabled
-  custom_data                                            = var.custom_cloud_init != null ? base64encode(var.custom_cloud_init) : (var.enable_boot_packages ? base64encode(local.default_cloud_init) : null)
+  custom_data                                            = var.custom_cloud_init != null ? base64encode(var.custom_cloud_init) : (var.enable_cloud_init ? base64encode(local.default_cloud_init) : null)
   zone                                                   = var.zone
   tags                                                   = var.vm_tags
   boot_diagnostics {

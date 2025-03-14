@@ -144,7 +144,7 @@ variable "private_ip_address" {
 }
 
 # Linux specific configuration
-variable "enable_boot_packages" {
+variable "enable_cloud_init" {
   description = "Enable installation of packages on first boot (Linux only)"
   type        = bool
   default     = true
