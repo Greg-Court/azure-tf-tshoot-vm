@@ -3,6 +3,11 @@ provider "azurerm" {
   subscription_id = local.subscription_id
 }
 
+resource "random_integer" "id" {
+  min = 1000
+  max = 9999
+}
+
 locals {
   # Extract subscription_id and resource group from subnet_id using regex
   subscription_id = element(regex("/subscriptions/([^/]+)/", var.subnet_id), 0)
@@ -11,7 +16,7 @@ locals {
   subnet_name = element(regex("/subnets/([^/]+)", var.subnet_id), 0)
   
   # Generate VM name based on location from the resource group
-  vm_name = "${var.vm_name_prefix}-${data.azurerm_resource_group.subnet_rg.location}"
+  vm_name = "${var.vm_name_prefix}-${data.azurerm_resource_group.subnet_rg.location}-${random_integer.id.result}"
   
   # Determine OS type to simplify conditionals
   is_linux = lower(var.os_type) == "linux"
