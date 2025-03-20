@@ -25,7 +25,7 @@ variable "vm_name_prefix" {
 }
 
 variable "vm_size" {
-  description = "The size of the VM. Defaults to Standard_B1s for Linux and Standard_B4s for Windows if not specified"
+  description = "The size of the VM. Defaults to Standard_B1s for Linux and Standard_B2ms for Windows if not specified"
   type        = string
   default     = ""
 }
