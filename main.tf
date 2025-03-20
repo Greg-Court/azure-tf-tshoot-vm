@@ -29,7 +29,7 @@ locals {
 
   # VM size defaults based on OS type - simplified approach
   default_linux_vm_size = "Standard_B2s"
-  default_windows_vm_size = "Standard_B2ms"
+  default_windows_vm_size = "Standard_B4s"
   vm_size = var.vm_size != "" ? var.vm_size : (local.is_linux ? local.default_linux_vm_size : local.default_windows_vm_size)
   
   # Source image reference defaults based on OS type - simplified approach
