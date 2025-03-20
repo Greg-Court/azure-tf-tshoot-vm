@@ -4,8 +4,8 @@ provider "azurerm" {
 }
 
 resource "random_integer" "id" {
-  min = 1000
-  max = 9999
+  min = 100
+  max = 999
 }
 
 locals {
@@ -15,8 +15,14 @@ locals {
   vnet_name = element(regex("/virtualNetworks/([^/]+)/", var.subnet_id), 0)
   subnet_name = element(regex("/subnets/([^/]+)", var.subnet_id), 0)
   
-  # Generate VM name based on location from the resource group
-  vm_name = "${var.vm_name_prefix}-${substr(lower(var.os_type), 0, 3)}-${data.azurerm_resource_group.subnet_rg.location}-${random_integer.id.result}"
+  # Get location from resource group
+  location = data.azurerm_resource_group.subnet_rg.location
+
+  # Try to get short region code, fall back to full location name if not found
+  location_short = try(local.region_short_mappings[local.location], local.location)
+
+  # Generate VM name based on location, using short code if available
+  vm_name = "${var.vm_name_prefix}-${substr(lower(var.os_type), 0, 3)}-${local.location_short}-${random_integer.id.result}"
   
   # Determine OS type to simplify conditionals
   is_linux = lower(var.os_type) == "linux"
@@ -55,7 +61,7 @@ data "azurerm_resource_group" "subnet_rg" {
 # Create resource group
 resource "azurerm_resource_group" "this" {
   name     = "rg-${local.vm_name}"
-  location = data.azurerm_resource_group.subnet_rg.location
+  location = local.location
   tags     = var.rg_tags
 }
 
@@ -70,5 +76,84 @@ resource "azurerm_network_interface" "this" {
     subnet_id                     = var.subnet_id
     private_ip_address_allocation = var.private_ip_address_allocation
     private_ip_address            = var.private_ip_address_allocation == "Static" ? var.private_ip_address : null
+  }
+}
+
+locals {
+  # Region name to short code mappings
+  region_short_mappings = {
+    "East Asia" = "ea"
+    "West US" = "wus"
+    "East US" = "eus"
+    "Central US" = "cus"
+    "East US 2" = "eus2"
+    "North Central US" = "ncus"
+    "South Central US" = "scus"
+    "North Europe" = "ne"
+    "West Europe" = "we"
+    "Southeast Asia" = "sea"
+    "Japan East" = "jpe"
+    "Japan West" = "jpw"
+    "Brazil South" = "brs"
+    "Australia East" = "ae"
+    "Australia Southeast" = "ase"
+    "Central India" = "inc"
+    "South India" = "ins"
+    "Canada Central" = "cnc"
+    "Canada East" = "cne"
+    "West Central US" = "wcus"
+    "West US 2" = "wus2"
+    "UK West" = "ukw"
+    "UK South" = "uks"
+    "Central US EUAP" = "ccy"
+    "East US 2 EUAP" = "ecy"
+    "Korea South" = "krs"
+    "Korea Central" = "krc"
+    "France Central" = "frc"
+    "France South" = "frs"
+    "Australia Central" = "acl"
+    "Australia Central 2" = "acl2"
+    "UAE Central" = "uac"
+    "UAE North" = "uan"
+    "South Africa North" = "san"
+    "South Africa West" = "saw"
+    "West India" = "inw"
+    "Norway East" = "nwe"
+    "Norway West" = "nww"
+    "Switzerland North" = "szn"
+    "Switzerland West" = "szw"
+    "Germany North" = "gn"
+    "Germany West Central" = "gwc"
+    "Sweden Central" = "sdc"
+    "Sweden South" = "sds"
+    "Brazil Southeast" = "bse"
+    "West US 3" = "wus3"
+    "Jio India Central" = "jic"
+    "Jio India West" = "jiw"
+    "Qatar Central" = "qac"
+    "Poland Central" = "plc"
+    "Malaysia South" = "mys"
+    "Taiwan North" = "twn"
+    "Taiwan Northwest" = "tnw"
+    "Israel Central" = "ilc"
+    "Italy North" = "itn"
+    "Mexico Central" = "mxc"
+    "Spain Central" = "spc"
+    "Chile Central" = "clc"
+    "New Zealand North" = "nzn"
+    "Malaysia West" = "myw"
+    "Indonesia Central" = "idc"
+    "Southeast US" = "use"
+    "USGov Virginia" = "ugv"
+    "USGov Arizona" = "uga"
+    "USGov Texas" = "ugt"
+    "USDoD Central" = "udc"
+    "USDoD East" = "ude"
+    "China North" = "bjb"
+    "China East" = "sha"
+    "China North 2" = "bjb2"
+    "China East 2" = "sha2"
+    "China North 3" = "bjb3"
+    "China East 3" = "sha3"
   }
 }
