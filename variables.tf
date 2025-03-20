@@ -21,7 +21,7 @@ variable "os_type" {
 variable "vm_name_prefix" {
   description = "Prefix for the VM name"
   type        = string
-  default     = "vm-"
+  default     = "vm"
 }
 
 variable "vm_size" {
