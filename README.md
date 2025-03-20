@@ -23,7 +23,7 @@ In its most simple form, a troubleshooting VM can be deployed with just the subn
 ```terraform
 module "tshoot_vm" {
   source    = "github.com/Greg-Court/azure-tf-tshoot-vm"
-  subnet_id = "<subnet_id>"
+  subnet_id = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/my-vnet-rg-name/providers/Microsoft.Network/virtualNetworks/my-vnet-name/subnets/my-subnet-name"
   os_type   = "linux"  # windows or linux
 }
 ```
@@ -36,7 +36,7 @@ module "tshoot_vm" {
   source    = "github.com/Greg-Court/azure-tf-tshoot-vm"
   
   # Required parameters
-  subnet_id = "<subnet_id>"
+  subnet_id = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/my-vnet-rg-name/providers/Microsoft.Network/virtualNetworks/my-vnet-name/subnets/my-subnet-name"
   os_type   = "windows"  # windows or linux
   
   # VM configuration
