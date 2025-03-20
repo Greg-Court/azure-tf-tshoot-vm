@@ -129,7 +129,7 @@ locals {
     "brazilsoutheast" = "bse"
     "westus3" = "wus3"
     "jioindiacentral" = "jic"
-    "jioindiaweast" = "jiw"
+    "jioindiawest" = "jiw"
     "qatarcentral" = "qac"
     "polandcentral" = "plc"
     "malaysiasouth" = "mys"
