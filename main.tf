@@ -16,7 +16,7 @@ locals {
   subnet_name = element(regex("/subnets/([^/]+)", var.subnet_id), 0)
   
   # Generate VM name based on location from the resource group
-  vm_name = "${var.vm_name_prefix}-${lower(var.os_type)}-${data.azurerm_resource_group.subnet_rg.location}-${random_integer.id.result}"
+  vm_name = "${var.vm_name_prefix}-${substr(lower(var.os_type), 0, 3)}-${data.azurerm_resource_group.subnet_rg.location}-${random_integer.id.result}"
   
   # Determine OS type to simplify conditionals
   is_linux = lower(var.os_type) == "linux"
