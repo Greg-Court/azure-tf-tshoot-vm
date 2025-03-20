@@ -66,7 +66,8 @@ module "tshoot_vm" {
   bypass_platform_safety_checks     = false
   secure_boot_enabled               = true
 
-  # Custom cloud-init (Linux only)
+  # Linux configuration
+  enable_cloud_init = true
   custom_cloud_init = <<-EOT
     #cloud-config
     package_update: true
@@ -103,22 +104,23 @@ module "tshoot_vm" {
 | Name | Description | Type | Default |
 |------|-------------|------|---------|
 | vm_name_prefix | Prefix for the VM name | `string` | `"vm-tshoot"` |
-| vm_size | The size of the VM | `string` | `"Standard_B1s"` (Linux) or `"Standard_B2ms"` (Windows) |
+| vm_size | The size of the VM | `string` | `"Standard_B2s"` (Linux) or `"Standard_B2ms"` (Windows) |
 | admin_username | The administrator username for the VM | `string` | `"azureadmin"` |
 | admin_password | The administrator password for the VM | `string` | `"Pa$$w0rd123!"` |
 | zone | The availability zone number for the VM | `number` | `null` |
 | os_disk_caching | The type of caching to use on the OS disk | `string` | `"ReadWrite"` |
 | os_disk_storage_account_type | The storage account type for the OS disk | `string` | `"StandardSSD_LRS"` |
-| source_image_publisher | The publisher of the VM image | `string` | OS-dependent default |
-| source_image_offer | The offer of the VM image | `string` | OS-dependent default |
-| source_image_sku | The SKU of the VM image | `string` | OS-dependent default |
+| source_image_publisher | The publisher of the VM image | `string` | `"canonical"` (Linux) or `"MicrosoftWindowsServer"` (Windows) |
+| source_image_offer | The offer of the VM image | `string` | `"ubuntu-24_04-lts"` (Linux) or `"WindowsServer"` (Windows) |
+| source_image_sku | The SKU of the VM image | `string` | `"server"` (Linux) or `"2022-Datacenter"` (Windows) |
 | source_image_version | The version of the VM image | `string` | `"latest"` |
 | private_ip_address_allocation | The private IP address allocation method | `string` | `"Dynamic"` |
 | private_ip_address | The static private IP address to assign when private_ip_address_allocation is 'Static' | `string` | `null` |
 | vm_agent_platform_updates_enabled | Enable platform updates via VM agent | `bool` | `true` |
 | patch_mode | The patching mode for the VM | `string` | `"AutomaticByPlatform"` |
-| bypass_platform_safety_checks | Enable bypass platform safety checks on user schedule | `bool` | `true` |
+| bypass_platform_safety_checks | Enable bypass platform safety checks on user schedule (maps to bypass_platform_safety_checks_on_user_schedule_enabled) | `bool` | `true` |
 | secure_boot_enabled | Enable secure boot | `bool` | `false` |
+| enable_cloud_init | Enable installation of packages on first boot (Linux only) | `bool` | `true` |
 | custom_cloud_init | Custom cloud-init config for Linux VMs (replaces default config) | `string` | `null` |
 | vm_tags | A map of tags to assign to the virtual machine | `map(string)` | `{}` |
 | rg_tags | A map of tags to assign to the resource group | `map(string)` | `{}` |
