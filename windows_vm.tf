@@ -1,6 +1,7 @@
 resource "azurerm_windows_virtual_machine" "this" {
   count                                                  = lower(var.os_type) == "windows" ? 1 : 0
   name                                                   = local.vm_name
+  computer_name                                          = upper(substr(replace(local.vm_name, "-", ""), 0, 15))
   resource_group_name                                    = azurerm_resource_group.this.name
   location                                               = azurerm_resource_group.this.location
   size                                                   = local.vm_size
