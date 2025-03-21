@@ -1,4 +1,4 @@
-output "resource_group_name" {
+output "rg_name" {
   description = "The name of the resource group"
   value       = local.resource_group_name
 }

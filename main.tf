@@ -16,7 +16,7 @@ locals {
   subnet_name = element(regex("/subnets/([^/]+)", var.subnet_id), 0)
   
   # Determine if we need to create a resource group
-  create_resource_group = !var.use_existing_resource_group
+  create_resource_group = !var.use_existing_rg
   
   # Get location from either the subnet resource group or the provided resource group
   location = local.create_resource_group ? data.azurerm_resource_group.subnet_rg.location : data.azurerm_resource_group.existing[0].location
@@ -24,12 +24,13 @@ locals {
   # Try to get short region code, fall back to full location name if not found
   location_short = try(local.region_short_mappings[local.location], local.location)
 
-  # Generate VM name based on location, using short code if available
-  vm_name = "${var.vm_name_prefix}-${substr(lower(var.os_type), 0, 3)}-${local.location_short}-${random_integer.id.result}"
+  # Generate VM name based on location, using short code if available, or use provided vm_name
+  generated_vm_name = "${var.vm_name_prefix}-${substr(lower(var.os_type), 0, 3)}-${local.location_short}-${random_integer.id.result}"
+  vm_name = var.vm_name != null ? var.vm_name : local.generated_vm_name
   
   # Determine custom or generated resource group name
   generated_rg_name = "rg-${local.vm_name}"
-  resource_group_name = var.use_existing_resource_group ? var.resource_group_name : (var.resource_group_name != null ? var.resource_group_name : local.generated_rg_name)
+  resource_group_name = var.use_existing_rg ? var.rg_name : (var.rg_name != null ? var.rg_name : local.generated_rg_name)
   
   # Determine OS type to simplify conditionals
   is_linux = lower(var.os_type) == "linux"
@@ -70,8 +71,8 @@ data "azurerm_resource_group" "subnet_rg" {
 
 # Data source for existing resource group if provided
 data "azurerm_resource_group" "existing" {
-  count = var.use_existing_resource_group ? 1 : 0
-  name  = var.resource_group_name
+  count = var.use_existing_rg ? 1 : 0
+  name  = var.rg_name
 }
 
 # Create resource group if existing_resource_group is not provided

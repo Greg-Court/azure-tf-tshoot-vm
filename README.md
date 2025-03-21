@@ -41,8 +41,8 @@ module "tshoot_vm" {
   os_type   = "windows"  # windows or linux
   
   # Optional parameters
-  use_existing_resource_group = true             # Use an existing resource group
-  resource_group_name         = "my-existing-rg" # Resource group name (existing or new)
+  use_existing_rg = true            # Use an existing resource group
+  rg_name         = "my-existing-rg" # Resource group name (existing or new)
   
   vm_name_prefix = "vm-custom"
   vm_size        = "Standard_D2s_v3"
@@ -107,8 +107,9 @@ module "tshoot_vm" {
 
 | Name | Description | Type | Default |
 |------|-------------|------|---------|
-| use_existing_resource_group | Whether to use an existing resource group. If true, resource_group_name must specify an existing RG. | `bool` | `false` |
-| resource_group_name | Resource group name to use (existing when use_existing_resource_group is true, or new when false). If not provided for a new RG, a name will be generated. | `string` | `null` |
+| use_existing_rg | Whether to use an existing resource group. If true, rg_name must specify an existing RG. | `bool` | `false` |
+| rg_name | Resource group name to use (existing when use_existing_rg is true, or new when false). If not provided for a new RG, a name will be generated. | `string` | `null` |
+| vm_name | Custom name for the VM. If provided, this will override the automatically generated name. | `string` | `null` |
 | vm_name_prefix | Prefix for the VM name | `string` | `"vm-tshoot"` |
 | vm_size | The size of the VM | `string` | `"Standard_B2s"` (Linux) or `"Standard_B2ms"` (Windows) |
 | admin_username | The administrator username for the VM | `string` | `"azureadmin"` |
@@ -135,7 +136,7 @@ module "tshoot_vm" {
 
 | Name | Description |
 |------|-------------|
-| resource_group_name | The name of the resource group |
+| rg_name | The name of the resource group |
 | vm_id | The ID of the created VM |
 | vm_name | The name of the created VM |
 | private_ip_address | The private IP address of the VM |
