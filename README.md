@@ -45,7 +45,7 @@ module "tshoot_vm" {
 }
 ```
 
-Note: No provider definition is required in your root module. The above code block is the complete configuration needed.
+**Note:** No provider definition is required in your root module. The above code block is the complete configuration needed.
 
 ### Complete Configuration Example
 Here's an example showing all available customization options:
