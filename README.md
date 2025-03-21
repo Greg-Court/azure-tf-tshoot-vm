@@ -18,6 +18,20 @@ This module deploys a Linux or Windows virtual machine for troubleshooting purpo
 2. Run terraform init
 3. Run terraform apply
 
+### Provider Handling Note
+This module was designed for rapid deployment with minimal configuration - including an internal provider definition so you don't need to set up providers for each subscription in your root module. While this enables quick "fire and forget" deployments, it comes with an important caveat:
+
+**When removing a module instance, you must explicitly destroy its resources first.**
+
+```bash
+# CORRECT: First destroy the resources before removing/commenting out the module
+terraform destroy -target=module.my_module_name
+
+# Then remove or comment out the module in your configuration
+```
+
+If you comment out or remove a module instance without destroying its resources first, Terraform will show provider configuration errors, as the provider defined inside the module is no longer available to manage the orphaned resources.
+
 ### Minimal Configuration
 In its most simple form, a troubleshooting VM can be deployed with just the subnet ID and OS type:
 
