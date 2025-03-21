@@ -41,7 +41,7 @@ module "tshoot_vm" {
   os_type   = "windows"  # windows or linux
   
   # Optional parameters
-  use_existing_resource_group = true            # Use an existing resource group
+  use_existing_resource_group = true             # Use an existing resource group
   resource_group_name         = "my-existing-rg" # Resource group name (existing or new)
   
   vm_name_prefix = "vm-custom"
