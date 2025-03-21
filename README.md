@@ -19,18 +19,20 @@ This module deploys a Linux or Windows virtual machine for troubleshooting purpo
 3. Run terraform apply
 
 ### Provider Handling Note
-This module was designed for rapid deployment with minimal configuration - including an internal provider definition so you don't need to set up providers for each subscription in your root module. While this enables quick "fire and forget" deployments, it comes with an important caveat:
+This module is designed for rapid deployment with minimal configuration - including an internal provider definition so you don't need to set up providers for each subscription in your root module. This enables quick "fire and forget" deployments.
 
-**When removing a module instance, you must explicitly destroy its resources first.**
+**For the typical use case** (deploy a VM, troubleshoot, then destroy everything), you can simply use `terraform destroy` as normal - no special handling required.
+
+**Only when managing multiple VM instances** in the same configuration and **needing to selectively removing some while keeping others**, you'll need to:
 
 ```bash
-# CORRECT: First destroy the resources before removing/commenting out the module
+# First destroy the specific module instance before removing it
 terraform destroy -target=module.my_module_name
 
-# Then remove or comment out the module in your configuration
+# Then remove or comment out that module in your configuration
 ```
 
-If you comment out or remove a module instance without destroying its resources first, Terraform will show provider configuration errors, as the provider defined inside the module is no longer available to manage the orphaned resources.
+This is because the provider is defined inside the module. If you comment out or remove a module instance without destroying its resources first, Terraform won't have access to the provider configuration needed to clean up the orphaned resources.
 
 ### Minimal Configuration
 In its most simple form, a troubleshooting VM can be deployed with just the subnet ID and OS type:
