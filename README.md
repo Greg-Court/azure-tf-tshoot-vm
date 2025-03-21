@@ -14,7 +14,7 @@ This module deploys a Linux or Windows virtual machine for troubleshooting purpo
 ## Usage
 
 ### Steps
-1. Login via Azure CLI to the correct tenant (selecting the subscription is not required)
+1. Login via Azure CLI to the correct tenant (selecting the target subscription is not required)
 2. Run terraform init
 3. Run terraform apply
 
@@ -44,6 +44,8 @@ module "tshoot_vm" {
   os_type   = "linux"  # windows or linux
 }
 ```
+
+Note: No provider definition is required in your root module. The above code block is the complete configuration needed.
 
 ### Complete Configuration Example
 Here's an example showing all available customization options:
