@@ -40,8 +40,9 @@ module "tshoot_vm" {
   subnet_id = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/my-vnet-rg-name/providers/Microsoft.Network/virtualNetworks/my-vnet-name/subnets/my-subnet-name"
   os_type   = "windows"  # windows or linux
   
-  # Optional paramters
-  resource_group_id = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/my-existing-rg/providers/Microsoft.Resources/resourceGroups/my-existing-rg"
+  # Optional parameters
+  use_existing_resource_group = true            # Use an existing resource group
+  resource_group_name         = "my-existing-rg" # Resource group name (existing or new)
   
   vm_name_prefix = "vm-custom"
   vm_size        = "Standard_D2s_v3"
@@ -106,7 +107,8 @@ module "tshoot_vm" {
 
 | Name | Description | Type | Default |
 |------|-------------|------|---------|
-| resource_group_id | The ID of an existing resource group to deploy the VM into. If not provided, a new resource group will be created. | `string` | `null` |
+| use_existing_resource_group | Whether to use an existing resource group. If true, resource_group_name must specify an existing RG. | `bool` | `false` |
+| resource_group_name | Resource group name to use (existing when use_existing_resource_group is true, or new when false). If not provided for a new RG, a name will be generated. | `string` | `null` |
 | vm_name_prefix | Prefix for the VM name | `string` | `"vm-tshoot"` |
 | vm_size | The size of the VM | `string` | `"Standard_B2s"` (Linux) or `"Standard_B2ms"` (Windows) |
 | admin_username | The administrator username for the VM | `string` | `"azureadmin"` |

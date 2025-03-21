@@ -18,8 +18,14 @@ variable "os_type" {
 ############################## OPTIONAL VARIABLES ##############################
 
 # General Configuration
-variable "resource_group_id" {
-  description = "The ID of an existing resource group to deploy the VM into. If not provided, a new resource group will be created."
+variable "use_existing_resource_group" {
+  description = "Whether to deploy the VM into an existing resource group. If true, resource_group_name must be specified."
+  type        = bool
+  default     = false
+}
+
+variable "resource_group_name" {
+  description = "Resource group name - can be either an existing RG name (when use_existing_resource_group is true) or a new RG name (when use_existing_resource_group is false). If not provided for a new RG, a name will be generated based on the VM name."
   type        = string
   default     = null
 }

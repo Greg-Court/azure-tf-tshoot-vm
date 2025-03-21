@@ -1,5 +1,3 @@
-# Updates to main.tf
-
 provider "azurerm" {
   features {}
   subscription_id = local.subscription_id
@@ -18,10 +16,7 @@ locals {
   subnet_name = element(regex("/subnets/([^/]+)", var.subnet_id), 0)
   
   # Determine if we need to create a resource group
-  create_resource_group = var.resource_group_id == null
-  
-  # Extract RG name from ID if provided
-  provided_rg_name = var.resource_group_id != null ? element(regex("/resourceGroups/([^/]+)(?:/|$)", var.resource_group_id), 0) : null
+  create_resource_group = !var.use_existing_resource_group
   
   # Get location from either the subnet resource group or the provided resource group
   location = local.create_resource_group ? data.azurerm_resource_group.subnet_rg.location : data.azurerm_resource_group.existing[0].location
@@ -32,6 +27,10 @@ locals {
   # Generate VM name based on location, using short code if available
   vm_name = "${var.vm_name_prefix}-${substr(lower(var.os_type), 0, 3)}-${local.location_short}-${random_integer.id.result}"
   
+  # Determine custom or generated resource group name
+  generated_rg_name = "rg-${local.vm_name}"
+  resource_group_name = var.use_existing_resource_group ? var.resource_group_name : (var.resource_group_name != null ? var.resource_group_name : local.generated_rg_name)
+  
   # Determine OS type to simplify conditionals
   is_linux = lower(var.os_type) == "linux"
 
@@ -41,7 +40,6 @@ locals {
   vm_size = var.vm_size != "" ? var.vm_size : (local.is_linux ? local.default_linux_vm_size : local.default_windows_vm_size)
   
   # Resource group reference - either the created one or the provided one
-  resource_group_name = local.create_resource_group ? azurerm_resource_group.this[0].name : data.azurerm_resource_group.existing[0].name
   resource_group_location = local.create_resource_group ? azurerm_resource_group.this[0].location : data.azurerm_resource_group.existing[0].location
   
   # Source image reference defaults based on OS type - simplified approach
@@ -72,14 +70,14 @@ data "azurerm_resource_group" "subnet_rg" {
 
 # Data source for existing resource group if provided
 data "azurerm_resource_group" "existing" {
-  count = var.resource_group_id != null ? 1 : 0
-  name  = local.provided_rg_name
+  count = var.use_existing_resource_group ? 1 : 0
+  name  = var.resource_group_name
 }
 
-# Create resource group if resource_group_id is not provided
+# Create resource group if existing_resource_group is not provided
 resource "azurerm_resource_group" "this" {
   count    = local.create_resource_group ? 1 : 0
-  name     = "rg-${local.vm_name}"
+  name     = local.resource_group_name
   location = local.location
   tags     = var.rg_tags
 }
