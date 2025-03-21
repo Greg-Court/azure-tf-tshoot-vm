@@ -21,7 +21,7 @@ locals {
   create_resource_group = var.resource_group_id == null
   
   # Extract RG name from ID if provided
-  provided_rg_name = var.resource_group_id != null ? element(regex("/resourceGroups/([^/]+)/", var.resource_group_id), 0) : null
+  provided_rg_name = var.resource_group_id != null ? element(regex("/resourceGroups/([^/]+)(?:/|$)", var.resource_group_id), 0) : null
   
   # Get location from either the subnet resource group or the provided resource group
   location = local.create_resource_group ? data.azurerm_resource_group.subnet_rg.location : data.azurerm_resource_group.existing[0].location
