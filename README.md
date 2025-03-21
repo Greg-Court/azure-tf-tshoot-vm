@@ -29,18 +29,6 @@ module "tshoot_vm" {
 }
 ```
 
-### Using an Existing Resource Group
-To deploy the VM to an existing resource group instead of creating a new one:
-
-```terraform
-module "tshoot_vm" {
-  source           = "github.com/Greg-Court/azure-tf-tshoot-vm"
-  subnet_id        = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/my-vnet-rg-name/providers/Microsoft.Network/virtualNetworks/my-vnet-name/subnets/my-subnet-name"
-  os_type          = "linux"
-  resource_group_id = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/my-existing-rg/providers/Microsoft.Resources/resourceGroups/my-existing-rg"
-}
-```
-
 ### Complete Configuration Example
 Here's an example showing all available customization options:
 
@@ -52,10 +40,9 @@ module "tshoot_vm" {
   subnet_id = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/my-vnet-rg-name/providers/Microsoft.Network/virtualNetworks/my-vnet-name/subnets/my-subnet-name"
   os_type   = "windows"  # windows or linux
   
-  # Optional: Use existing resource group instead of creating a new one
+  # Optional paramters
   resource_group_id = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/my-existing-rg/providers/Microsoft.Resources/resourceGroups/my-existing-rg"
   
-  # VM configuration
   vm_name_prefix = "vm-custom"
   vm_size        = "Standard_D2s_v3"
   admin_username = "customadmin"
