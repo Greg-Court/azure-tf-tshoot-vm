@@ -34,7 +34,7 @@ terraform destroy -target=module.my_module_name
 
 This is because the provider is defined inside the module. If you comment out or remove a module instance without destroying its resources first, Terraform won't have access to the provider configuration needed to clean up the orphaned resources.
 
-The design tradeoff prioritizes immediate deployment capability - critical when troubleshooting production issues where every minute counts. The simplified workflow enables engineers to deploy diagnostic VMs in seconds rather than minutes, without managing provider configurations across multiple subscriptions.
+The design tradeoff prioritizes immediate deployment capability - critical when troubleshooting production issues where every minute counts. Minimising code required for deployment enables engineers to deploy diagnostic VMs in seconds rather than minutes, without managing provider configurations across multiple subscriptions.
 
 ### Minimal Configuration
 In its most simple form, a troubleshooting VM can be deployed with just the subnet ID and OS type:
