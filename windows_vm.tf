@@ -17,7 +17,7 @@ resource "azurerm_windows_virtual_machine" "this" {
   boot_diagnostics {
     storage_account_uri = null
   }
-  
+
   os_disk {
     caching              = var.os_disk_caching
     storage_account_type = var.os_disk_storage_account_type

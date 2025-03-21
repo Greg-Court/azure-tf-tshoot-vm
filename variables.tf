@@ -8,7 +8,7 @@ variable "subnet_id" {
 variable "os_type" {
   description = "The OS type for the VM. Can be 'linux' or 'windows'"
   type        = string
-  
+
   validation {
     condition     = contains(["linux", "windows"], lower(var.os_type))
     error_message = "The os_type value must be either 'linux' or 'windows'."
@@ -37,7 +37,6 @@ variable "vm_name" {
   default     = null
 }
 
-# VM Configuration
 variable "vm_name_prefix" {
   description = "Prefix for the VM name"
   type        = string
@@ -67,7 +66,7 @@ variable "zone" {
   description = "The availability zone number for the VM. Valid values are 1, 2, 3"
   type        = number
   default     = null
-  
+
   validation {
     condition     = var.zone == null ? true : contains([1, 2, 3], var.zone)
     error_message = "The zone value must be either null, 1, 2, or 3."
