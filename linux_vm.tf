@@ -1,8 +1,8 @@
 resource "azurerm_linux_virtual_machine" "this" {
   count                                                  = lower(var.os_type) == "linux" ? 1 : 0
   name                                                   = local.vm_name
-  resource_group_name                                    = azurerm_resource_group.this.name
-  location                                               = azurerm_resource_group.this.location
+  resource_group_name                                    = local.resource_group_name
+  location                                               = local.resource_group_location
   size                                                   = local.vm_size
   admin_username                                         = var.admin_username
   admin_password                                         = var.admin_password

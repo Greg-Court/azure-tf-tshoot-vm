@@ -1,3 +1,5 @@
+# Updates to main.tf
+
 provider "azurerm" {
   features {}
   subscription_id = local.subscription_id
@@ -15,8 +17,14 @@ locals {
   vnet_name = element(regex("/virtualNetworks/([^/]+)/", var.subnet_id), 0)
   subnet_name = element(regex("/subnets/([^/]+)", var.subnet_id), 0)
   
-  # Get location from resource group
-  location = data.azurerm_resource_group.subnet_rg.location
+  # Determine if we need to create a resource group
+  create_resource_group = var.resource_group_id == null
+  
+  # Extract RG name from ID if provided
+  provided_rg_name = var.resource_group_id != null ? element(regex("/resourceGroups/([^/]+)/", var.resource_group_id), 0) : null
+  
+  # Get location from either the subnet resource group or the provided resource group
+  location = local.create_resource_group ? data.azurerm_resource_group.subnet_rg.location : data.azurerm_resource_group.existing[0].location
 
   # Try to get short region code, fall back to full location name if not found
   location_short = try(local.region_short_mappings[local.location], local.location)
@@ -31,6 +39,10 @@ locals {
   default_linux_vm_size = "Standard_B2s"
   default_windows_vm_size = "Standard_B2ms"
   vm_size = var.vm_size != "" ? var.vm_size : (local.is_linux ? local.default_linux_vm_size : local.default_windows_vm_size)
+  
+  # Resource group reference - either the created one or the provided one
+  resource_group_name = local.create_resource_group ? azurerm_resource_group.this[0].name : data.azurerm_resource_group.existing[0].name
+  resource_group_location = local.create_resource_group ? azurerm_resource_group.this[0].location : data.azurerm_resource_group.existing[0].location
   
   # Source image reference defaults based on OS type - simplified approach
   default_linux_publisher = "canonical"
@@ -58,8 +70,15 @@ data "azurerm_resource_group" "subnet_rg" {
   name = local.subnet_resource_group
 }
 
-# Create resource group
+# Data source for existing resource group if provided
+data "azurerm_resource_group" "existing" {
+  count = var.resource_group_id != null ? 1 : 0
+  name  = local.provided_rg_name
+}
+
+# Create resource group if resource_group_id is not provided
 resource "azurerm_resource_group" "this" {
+  count    = local.create_resource_group ? 1 : 0
   name     = "rg-${local.vm_name}"
   location = local.location
   tags     = var.rg_tags
@@ -68,8 +87,8 @@ resource "azurerm_resource_group" "this" {
 # Create network interface
 resource "azurerm_network_interface" "this" {
   name                = "${local.vm_name}-nic"
-  location            = azurerm_resource_group.this.location
-  resource_group_name = azurerm_resource_group.this.name
+  location            = local.resource_group_location
+  resource_group_name = local.resource_group_name
 
   ip_configuration {
     name                          = "internal"

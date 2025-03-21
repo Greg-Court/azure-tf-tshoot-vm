@@ -9,6 +9,7 @@ This module deploys a Linux or Windows virtual machine for troubleshooting purpo
 - Customizable VM properties for specific testing scenarios
 - Support for static IP address assignment
 - Linux VM cloud-init with common network troubleshooting tools
+- Option to deploy to an existing resource group
 
 ## Usage
 
@@ -28,6 +29,18 @@ module "tshoot_vm" {
 }
 ```
 
+### Using an Existing Resource Group
+To deploy the VM to an existing resource group instead of creating a new one:
+
+```terraform
+module "tshoot_vm" {
+  source           = "github.com/Greg-Court/azure-tf-tshoot-vm"
+  subnet_id        = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/my-vnet-rg-name/providers/Microsoft.Network/virtualNetworks/my-vnet-name/subnets/my-subnet-name"
+  os_type          = "linux"
+  resource_group_id = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/my-existing-rg/providers/Microsoft.Resources/resourceGroups/my-existing-rg"
+}
+```
+
 ### Complete Configuration Example
 Here's an example showing all available customization options:
 
@@ -38,6 +51,9 @@ module "tshoot_vm" {
   # Required parameters
   subnet_id = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/my-vnet-rg-name/providers/Microsoft.Network/virtualNetworks/my-vnet-name/subnets/my-subnet-name"
   os_type   = "windows"  # windows or linux
+  
+  # Optional: Use existing resource group instead of creating a new one
+  resource_group_id = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/my-existing-rg/providers/Microsoft.Resources/resourceGroups/my-existing-rg"
   
   # VM configuration
   vm_name_prefix = "vm-custom"
@@ -103,6 +119,7 @@ module "tshoot_vm" {
 
 | Name | Description | Type | Default |
 |------|-------------|------|---------|
+| resource_group_id | The ID of an existing resource group to deploy the VM into. If not provided, a new resource group will be created. | `string` | `null` |
 | vm_name_prefix | Prefix for the VM name | `string` | `"vm-tshoot"` |
 | vm_size | The size of the VM | `string` | `"Standard_B2s"` (Linux) or `"Standard_B2ms"` (Windows) |
 | admin_username | The administrator username for the VM | `string` | `"azureadmin"` |
@@ -129,7 +146,7 @@ module "tshoot_vm" {
 
 | Name | Description |
 |------|-------------|
-| resource_group_name | The name of the created resource group |
+| resource_group_name | The name of the resource group |
 | vm_id | The ID of the created VM |
 | vm_name | The name of the created VM |
 | private_ip_address | The private IP address of the VM |

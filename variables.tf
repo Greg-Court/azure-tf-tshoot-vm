@@ -17,6 +17,13 @@ variable "os_type" {
 
 ############################## OPTIONAL VARIABLES ##############################
 
+# General Configuration
+variable "resource_group_id" {
+  description = "The ID of an existing resource group to deploy the VM into. If not provided, a new resource group will be created."
+  type        = string
+  default     = null
+}
+
 # VM Configuration
 variable "vm_name_prefix" {
   description = "Prefix for the VM name"
