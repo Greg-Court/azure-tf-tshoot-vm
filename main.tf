@@ -99,6 +99,10 @@ resource "azurerm_network_interface" "this" {
     private_ip_address_allocation = var.private_ip_address_allocation
     private_ip_address            = var.private_ip_address_allocation == "Static" ? var.private_ip_address : null
   }
+
+  lifecycle {
+    ignore_changes = [tags]
+  }
 }
 
 locals {

@@ -160,5 +160,5 @@ module "tshoot_vm" {
 | vm_id | The ID of the created VM |
 | vm_name | The name of the created VM |
 | private_ip_address | The private IP address of the VM |
-| admin_username | The administrator username for the VM |
+| admi_username | The administrator username for the VM |
 | admin_password | The administrator password for the VM (sensitive) |

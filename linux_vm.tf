@@ -30,6 +30,10 @@ resource "azurerm_linux_virtual_machine" "this" {
     sku       = local.source_image_sku
     version   = var.source_image_version
   }
+
+  lifecycle {
+    ignore_changes = [tags]
+  }
 }
 
 locals {
