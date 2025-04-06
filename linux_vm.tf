@@ -32,7 +32,7 @@ resource "azurerm_linux_virtual_machine" "this" {
   }
 
   lifecycle {
-    ignore_changes = [tags]
+    ignore_changes = [tags, identity]
   }
 }
 

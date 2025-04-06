@@ -31,6 +31,6 @@ resource "azurerm_windows_virtual_machine" "this" {
   }
 
   lifecycle {
-    ignore_changes = [tags]
+    ignore_changes = [tags, identity]
   }
 }
