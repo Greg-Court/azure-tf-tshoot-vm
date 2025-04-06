@@ -9,7 +9,6 @@ resource "azurerm_windows_virtual_machine" "this" {
   admin_password                                         = var.admin_password
   network_interface_ids                                  = [azurerm_network_interface.this.id]
   patch_mode                                             = var.patch_mode
-  vm_agent_platform_updates_enabled                      = var.vm_agent_platform_updates_enabled
   bypass_platform_safety_checks_on_user_schedule_enabled = var.bypass_platform_safety_checks
   secure_boot_enabled                                    = var.secure_boot_enabled
   zone                                                   = var.zone
@@ -31,6 +30,6 @@ resource "azurerm_windows_virtual_machine" "this" {
   }
 
   lifecycle {
-    ignore_changes = [tags, identity, vm_agent_platform_updates_enabled, patch_assessment_mode]
+    ignore_changes = [tags, identity, patch_assessment_mode]
   }
 }

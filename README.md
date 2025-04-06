@@ -85,7 +85,6 @@ module "tshoot_vm" {
   private_ip_address            = "10.0.1.10"  # Required when allocation is Static
   
   # Security and patching
-  vm_agent_platform_updates_enabled = true
   patch_mode                        = "Manual"
   bypass_platform_safety_checks     = false
   secure_boot_enabled               = true
@@ -143,7 +142,6 @@ module "tshoot_vm" {
 | source_image_version | The version of the VM image | `string` | `"latest"` |
 | private_ip_address_allocation | The private IP address allocation method | `string` | `"Dynamic"` |
 | private_ip_address | The static private IP address to assign when private_ip_address_allocation is 'Static' | `string` | `null` |
-| vm_agent_platform_updates_enabled | Enable platform updates via VM agent | `bool` | `true` |
 | patch_mode | The patching mode for the VM | `string` | `"AutomaticByPlatform"` |
 | bypass_platform_safety_checks | Enable bypass platform safety checks on user schedule (maps to bypass_platform_safety_checks_on_user_schedule_enabled) | `bool` | `true` |
 | secure_boot_enabled | Enable secure boot | `bool` | `false` |

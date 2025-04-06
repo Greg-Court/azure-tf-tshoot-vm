@@ -119,12 +119,6 @@ variable "private_ip_address_allocation" {
 }
 
 # Security and Patching
-variable "vm_agent_platform_updates_enabled" {
-  description = "Enable platform updates via VM agent"
-  type        = bool
-  default     = true
-}
-
 variable "patch_mode" {
   description = "The patching mode for the VM"
   type        = string
